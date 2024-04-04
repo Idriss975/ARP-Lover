@@ -34,7 +34,7 @@ printf "╠═  1. Scan for available machine within your network (ARP Scan)\n"
 #TODO: Not allow 2nd & 3rd option without scanning first
 printf "╠═  2. Kill Network Access for scanned machines (ARP Spoof target only)\n"
 printf "╠═  3. Man In the Middle (ARP Spoof target & gateway)\n"
-printf "╠═  4. List Scanned machines\n"
+printf "╠═  4. List Scanned machines (not implemented)\n"
 printf "╠═  5. Protect yourself using ArpON\n"
 printf "╚═  6. Exit\n"
 printf "\n"
