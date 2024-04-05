@@ -16,7 +16,7 @@ IPs=()
 
 # Correction (ReArping)
 
-Gateway=$(ip route show default dev wlan0 | awk '{print $3}' | tail -n 1 )
+Gateway=$(ip route show default dev $2 | awk '{print $3}' | tail -n 1 )
 
 printf "\e[37;41m╔═══════════════════════════════════════════════════════════════════════════╗ \033[0m\n"
 printf "\e[37;41m║                                                                           ║ \033[0m\n"
