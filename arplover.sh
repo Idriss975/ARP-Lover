@@ -97,7 +97,7 @@ do
 		printf "Arpon has been enabled as background daemon.\n"
 		;;
 		
-	6)
+	6 | q)
 		if [[ ! ${#IPs[@]} -eq 0 ]] then
 			printf "Rearping...\n"
 		fi
