@@ -30,7 +30,7 @@ printf "\e[37;41m║                                                            
 printf "\e[37;41m╠═════════════════════════ BERCHIL Idriss ══════════════════════════════════╝ \033[0m\n"
 printf "║\n"
 
-if [[ ip link show $2 ]]
+if ! ip link show $2
 then
 	echo "(ERROR)> invalid network interface"
 	exit 400
